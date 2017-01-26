@@ -30,8 +30,41 @@ function markMove (pos, player) {
 }
 
 function validateMove (pos) {
-  if (Number.isInteger(pos) && Number.isInteger(board[pos] && (pos >= 0 && pos < 9))) return true
+  if (!(isNaN(pos)) && (pos >= 0 && pos <= 9)) return true
   return false
 }
 
+function checkWin (player) {
+  let count
+  for (let row of winCombos) {
+    count = 0
+    for (let i = 0; i < row.length; i++) {
+      if (board[row[i]] === player) count++
+      if (count === 3) return true
+    }
+  }
+  return false
+}
+
+function play (player) {
+  console.log(`Your move player: ${player}`)
+  prompt.start()
+  prompt.get(['position'], function (err, result) {
+    if (validateMove(result.position)) {
+      markMove(result.position, player)
+      printBoard()
+      if (checkWin(player)) {
+        console.log('WIN!')
+        return
+      }
+      if (player === 'X') play('O')
+      else play('X')
+    } else {
+      console.log('Invalid move. ):')
+      play(player)
+    }
+  })
+}
+
 printBoard()
+play('X')
