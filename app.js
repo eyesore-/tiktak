@@ -34,6 +34,4 @@ function validateMove (pos) {
   return false
 }
 
-function checkWin
-
 printBoard()
