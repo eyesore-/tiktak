@@ -7,14 +7,14 @@ const prompt = require('prompt')
 // -----------------
 //   7  |  8  |  9
 
-let board = [1, 2, 3, 4, 5, 6, 7, 8, 9]
-let winCombos = [
+const board = [1, 2, 3, 4, 5, 6, 7, 8, 9]
+const winCombos = [
   [0, 1, 2], [3, 4, 5], [6, 7, 8],
   [0, 3, 6], [1, 4, 7], [2, 5, 8],
   [0, 4, 8], [3, 4, 6]
 ]
 
-function printBoard () {
+const printBoard = () => {
   console.log(
     `\n
       ${board[0]}  |  ${board[1]}  |  ${board[2]}  \n
@@ -29,27 +29,25 @@ function markMove (pos, player) {
   board[pos - 1] = player
 }
 
-function validateMove (pos) {
-  if (!(isNaN(pos)) && (pos >= 0 && pos <= 9)) return true
-  return false
-}
+const validateMove = pos => !(isNaN(pos)) && (pos >= 0 && pos <= 9)
 
-function checkWin (player) {
+const checkWin = player => {
   let count
   for (let row of winCombos) {
     count = 0
-    for (let i = 0; i < row.length; i++) {
-      if (board[row[i]] === player) count++
+    row.forEach(item => {
+      if (board[item] === player) count++
       if (count === 3) return true
-    }
+    })
   }
   return false
 }
 
-function play (player) {
+const play = player => {
   console.log(`Your move player: ${player}`)
   prompt.start()
-  prompt.get(['position'], function (err, result) {
+  prompt.get(['position'], (err, result) => {
+    if (err) console.error(err)
     if (validateMove(result.position)) {
       markMove(result.position, player)
       printBoard()
